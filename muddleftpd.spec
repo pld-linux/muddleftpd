@@ -52,7 +52,7 @@ uprawnieñ roota, MUDDLEFTPD zosta³ zaprojektowany tak, aby móg³
 dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 %patch0 -p1
 
 %build
@@ -114,7 +114,6 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS CHANGES README TODO doc/*.txt examples
-
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/muddleftpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.ftp
@@ -125,10 +124,8 @@ fi
 %attr(640,root,root) /etc/sysconfig/*
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
-
-%{_mandir}/man1/*
-%{_infodir}/*
-
 %attr(755,root,root) %dir /home/services/ftp
 %attr(755,root,root) %dir /home/services/ftp/pub
 %attr(700,root,ftp) %verify(not mode) %dir /home/services/ftp/upload
+%{_mandir}/man1/*
+%{_infodir}/*
