@@ -15,39 +15,44 @@
 # Get network config
 . /etc/sysconfig/network
 
+# Check that networking is up.
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		# nls "ERROR: Networking is down. %s can't be run." <service>
+		msg_network_down muddleftpd
+		exit 1
+	fi
+else
+	exit 0
+fi
+
 # Get service config
 [ -f /etc/sysconfig/muddleftpd ] && . /etc/sysconfig/muddleftpd
 
-# Check that networking is up.
-if is_no "${NETWORKING}"; then
-        # nls "ERROR: Networking is down. %s can't be run." <service>
-        msg_network_down muddleftpd
-        exit 1
-fi
 
 # See how we were called.
 case "$1" in
   start)
 	# Check if the service is already running?
-        if [ ! -f /var/lock/subsys/muddleftpd ]; then
+	if [ ! -f /var/lock/subsys/muddleftpd ]; then
 		msg_starting muddleftpd
 		daemon muddleftpd $MUDDLEFTPD_OPTS
-	        RETVAL=$?
+		RETVAL=$?
     		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/muddleftpd
 	else
-        	msg_already_running muddleftpd
-	        exit 1
+		msg_already_running muddleftpd
+		exit 1
 	fi
 	;;
   stop)
-        # Stop daemons.
+	# Stop daemons.
 	if [ -f /var/lock/subsys/muddleftpd ]; then
-                msg_stopping muddleftpd
-                killproc muddleftpd
-                rm -f /var/lock/subsys/muddleftpd /var/run/muddleftpd.pid >/dev/null 2>&1
-        else
+		msg_stopping muddleftpd
+		killproc muddleftpd
+		rm -f /var/lock/subsys/muddleftpd /var/run/muddleftpd.pid >/dev/null 2>&1
+	else
 		msg_not_running muddleftpd
-	        exit 1
+		exit 1
 	fi
 	;;
   status)
@@ -59,7 +64,7 @@ case "$1" in
 	$0 start
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|status}"
+	msg_usage "$0 {start|stop|restart|reload|status}"
 	exit 1
 	;;
 esac
