@@ -27,9 +27,9 @@ Obsoletes:	ftpd-BSD
 Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
 Obsoletes:	proftpd
-Obsoletes:      proftpd-common
-Obsoletes:      proftpd-inetd
-Obsoletes:      proftpd-standalone
+Obsoletes:	proftpd-common
+Obsoletes:	proftpd-inetd
+Obsoletes:	proftpd-standalone
 Obsoletes:	pure-ftpd
 Obsoletes:	troll-ftpd
 Obsoletes:	vsftpd
@@ -83,8 +83,6 @@ touch $RPM_BUILD_ROOT/etc/security/blacklist.ftp
 install src/ratiotool		$RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
 
-gzip -9nf AUTHORS CHANGES README TODO doc/*.txt examples/*
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -110,7 +108,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz doc/*.gz examples
+%doc AUTHORS CHANGES README TODO doc/*.txt examples
 
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/muddleftpd.conf
