@@ -1,18 +1,18 @@
 Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
-Version:	1.3.11
-Release:	7
+Version:	1.3.12.1
+Release:	1
 License:	GPL
 Group:		Daemons
-Source0:	http://www.arach.net.au/~wildfire/muddleftpd/%{name}.%{version}.tar.gz
+Source0:	http://savannah.nongnu.org/download/%{name}/%{name}-%{version}.tar.gz
 Source1:	ftp.pamd
 Source2:	%{name}.logrotate
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
 Source5:	%{name}.conf
 Patch0:		%{name}-MD5-passwd.patch
-URL:		http://www.muddleftpd.cx/
+URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	autoconf
 BuildRequires:	pam-devel
 Prereq:		rc-scripts
@@ -50,7 +50,7 @@ uprawnieñ roota, MUDDLEFTPD zosta³ zaprojektowany tak, aby móg³
 dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 
 %prep
-%setup -q -n %{name}.%{version}
+%setup -q -n %{name}-%{version}
 %patch0 -p1
 
 %build
