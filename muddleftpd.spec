@@ -1,5 +1,5 @@
 Summary:	muddleftpd - ftp daemon
-Summary(pl):	muddleftpd - serwer ftp
+Summary(pl):	muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
 Release:	2
