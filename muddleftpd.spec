@@ -2,7 +2,7 @@ Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
 Version:	1.3.12.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/%{name}/%{name}-%{version}.tar.gz
@@ -11,6 +11,7 @@ Source2:	%{name}.logrotate
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
 Source5:	%{name}.conf
+Source6:	%{name}-mudpasswd.1
 Patch0:		%{name}-MD5-passwd.patch
 URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	autoconf
@@ -77,6 +78,8 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/ftp
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/muddleftpd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/muddleftpd
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/muddleftpd
+install %{SOURCE6} $RPM_BUILD_ROOT{_mandir}/man1/mudpasswd.1
+
 
 touch $RPM_BUILD_ROOT/var/log/muddleftpd
 touch $RPM_BUILD_ROOT/etc/security/blacklist.ftp
