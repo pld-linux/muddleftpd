@@ -2,7 +2,7 @@ Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
 Version:	1.3.11
-Release:	1
+Release:	2
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -14,6 +14,7 @@ Source3:	%{name}.init
 Source4:	%{name}.sysconfig
 Patch0:		%{name}-MD5-passwd.patch
 URL:		http://www.muddleftpd.cx/
+BuildRequires:	autoconf
 BuildRequires:	pam-devel
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
