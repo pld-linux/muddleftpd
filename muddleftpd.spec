@@ -51,7 +51,7 @@ dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 %patch0 -p1
 
 %build
-autoconf
+%{__autoconf}
 %configure
 
 %{__make}
