@@ -1,0 +1,25 @@
+diff -urN muddleftpd.1.3.11_/src/mudpasswd.c muddleftpd.1.3.11/src/mudpasswd.c
+--- muddleftpd.1.3.11_/src/mudpasswd.c	Tue Mar 20 13:18:01 2001
++++ muddleftpd.1.3.11/src/mudpasswd.c	Sun May 27 16:03:03 2001
+@@ -110,12 +110,16 @@
+ 
+ char *cryptedpass(char *clearpass)
+ {
+-	char salt[5];
+-	
++	char salt[13];
++	int i;	
+ 	srandom((unsigned int)time(NULL));
+-	salt[0] = getsaltchar();
+-	salt[1] = getsaltchar();
+-	salt[2] = 0;
++
++        memset(salt, 0, 13);
++        strcpy(salt, "$1$");
++        for (i = 0; i < 8; i++)
++    	    salt[i + 3] = getsaltchar();
++        strcat(salt, "$");
++						    
+ 	
+ 	return(crypt(clearpass, salt));
+ }
