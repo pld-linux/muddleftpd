@@ -1,3 +1,11 @@
+#
+# TODO:
+# - check BRs if their really needed (mysql-devel, samba-devel),
+# - check R (packages doesn't compiling on headers and dont linking with
+#            shared libraries - is it ok? :) ),
+# - cleanups,
+# - better descriptions ?
+#
 Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
@@ -19,6 +27,8 @@ URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	autoconf
 BuildRequires:	pam-devel
 BuildRequires:	texinfo
+BuildRequires:	mysql-devel
+#BuildRequires:	samba-devel
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
@@ -54,6 +64,49 @@ MUDDLEFTPD jest serwerem FTP. O ile wiêkszo¶æ serwerów FTP chce
 uprawnieñ roota, MUDDLEFTPD zosta³ zaprojektowany tak, aby móg³
 dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 
+%package authlibmud
+Summary:        Library to MUD authentication for muddleftpd
+Summary(pl):    Biblioteka do autentykacji MUD dla muddleftpd
+Group:          Daemons
+Requires:	muddleftpd
+
+%description authlibmud
+Authenticate against player files on a mud server.
+
+%description authlibmud -l pl
+Autyrozacja oparta o pliki u¿ytkowników na serwerze muda.
+
+%package authlibmysql
+Summary:        Library to MySQL authentication for muddleftpd
+Summary(pl):    Biblioteka autentykacji MySQL dla muddleftpd
+Group:          Daemons
+Requires:	muddleftpd
+Requires:	mysql
+
+%description authlibmysql
+This module allows muddleftpd authenticate using a MySQL server. This
+module will read client information from a supplied table/database
+within MySQL.
+
+%description authlibmysql -l pl
+Ten modu³ pozwala muddleftpd autentykowaæ u¿ytkowników przy u¿yciu
+serwera MySQL. Modu³ czyta informacje o kliencie z podanej tabeli/bazy
+MySQL.
+
+%package authlibsmb
+Summary:        Library to SMB authentication for muddleftpd
+Summary(pl):    Biblioteka do autentykacji SMB dla muddleftpd
+Group:          Daemons
+Requires:	muddleftpd
+Requires:	samba-client
+
+%description authlibsmb
+This module allows muddleftpd authenticate using a SMB server.
+ 
+%description authlibsmb -l pl
+Ten modu³ pozwala muddleftpd autentykowa³ u¿ytkowników korzystaj±c z
+serwera SMB.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -81,6 +134,11 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_sysconfdir},/var/log} \
 	INFODIR=$RPM_BUILD_ROOT%{_infodir} \
 	libdir=$RPM_BUILD_ROOT%{_libdir}/%{name}
 
+# documentation of modules
+mv modules/auth/authlibmud/README modules/auth/authlibmud/README.authlibmud
+mv modules/auth/authlibmysql/README modules/auth/authlibmysql/README.authlibmysql
+mv modules/auth/authlibsmb/README modules/auth/authlibsmb/README.authlibsmb 
+
 mv -f $RPM_BUILD_ROOT%{_sbindir}/ftpwho $RPM_BUILD_ROOT%{_bindir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/ftp
@@ -88,7 +146,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/muddleftpd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/muddleftpd
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/muddleftpd
 install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man1/mudpasswd.1
-
 
 touch $RPM_BUILD_ROOT/var/log/muddleftpd
 touch $RPM_BUILD_ROOT/etc/security/blacklist.ftp
@@ -121,7 +178,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS CHANGES README TODO doc/*.txt examples
+%doc AUTHORS ChangeLog README TODO doc/*.txt examples
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/muddleftpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.ftp
@@ -137,3 +194,15 @@ fi
 %attr(700,root,ftp) %verify(not mode) %dir /home/services/ftp/upload
 %{_mandir}/man1/*
 %{_infodir}/*.info*
+
+%files authlibmud
+%doc modules/auth/authlibmud/README.authlibmud
+%{_libdir}/%{name}/libauthmud.so
+
+%files authlibmysql
+%doc modules/auth/authlibmysql/README.authlibmysql
+%{_libdir}/%{name}/libauthmysql.so
+
+%files authlibsmb
+%doc modules/auth/authlibsmb/README.authlibsmb
+%{_libdir}/%{name}/libauthsmb.so
