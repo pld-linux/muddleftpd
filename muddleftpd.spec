@@ -5,8 +5,6 @@ Version:	1.3.11
 Release:	4
 License:	GPL
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 Source0:	http://www.arach.net.au/~wildfire/muddleftpd/%{name}.%{version}.tar.gz
 Source1:	ftp.pamd
 Source2:	%{name}.logrotate
