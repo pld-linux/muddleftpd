@@ -2,7 +2,7 @@ Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
 Version:	1.3.11
-Release:	5
+Release:	6
 License:	GPL
 Group:		Daemons
 Source0:	http://www.arach.net.au/~wildfire/muddleftpd/%{name}.%{version}.tar.gz
@@ -27,10 +27,13 @@ Obsoletes:	ftpd-BSD
 Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
 Obsoletes:	proftpd
+Obsoletes:      proftpd-common
+Obsoletes:      proftpd-inetd
+Obsoletes:      proftpd-standalone
 Obsoletes:	pure-ftpd
 Obsoletes:	troll-ftpd
+Obsoletes:	vsftpd
 Obsoletes:	wu-ftpd
-Conflicts:      proftpd-common
 
 %define		_sysconfdir	/etc/muddleftpd
 %define		_localstatedir	/var/run
