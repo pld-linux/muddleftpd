@@ -2,7 +2,7 @@ Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
 Version:	1.3.11
-Release:	3
+Release:	4
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -12,6 +12,7 @@ Source1:	ftp.pamd
 Source2:	%{name}.logrotate
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
+Source5:	%{name}.conf
 Patch0:		%{name}-MD5-passwd.patch
 URL:		http://www.muddleftpd.cx/
 BuildRequires:	autoconf
@@ -74,11 +75,11 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/muddleftpd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/muddleftpd
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/muddleftpd
 
-touch $RPM_BUILD_ROOT/var/log/muddleftpd.log
+touch $RPM_BUILD_ROOT/var/log/muddleftpd
+touch $RPM_BUILD_ROOT/etc/security/blacklist.ftp
 
-# probably it'd be better to provide our own default conf file...
 install src/ratiotool		$RPM_BUILD_ROOT%{_bindir}
-install examples/standard.conf	$RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
+install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
 
 gzip -9nf AUTHORS CHANGES README TODO doc/*.txt examples/*
 
@@ -111,6 +112,7 @@ fi
 
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/muddleftpd.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.ftp
 %attr(640,root,root) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
