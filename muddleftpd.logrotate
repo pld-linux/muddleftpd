@@ -1,5 +1,5 @@
 /var/log/muddleftpd {
     postrotate
-	/usr/bin/killall -HUP muddleftpd
+	/bin/killall -HUP muddleftpd
     endscript
 }
