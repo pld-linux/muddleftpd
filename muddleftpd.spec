@@ -2,7 +2,7 @@ Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
 Version:	1.3.11
-Release:	2
+Release:	3
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -120,3 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_mandir}/man1/*
 %{_infodir}/*
+
+%attr(755,root,root) %dir /home/ftp
+%attr(755,root,root) %dir /home/ftp/pub
+%attr(700,root,ftp) %verify(not mode) %dir /home/ftp/upload
