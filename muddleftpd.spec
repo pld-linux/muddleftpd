@@ -17,6 +17,7 @@ Patch0:		%{name}-MD5-passwd.patch
 URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	autoconf
 BuildRequires:	pam-devel
+BuildRequires:	texinfo
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
 Requires:	logrotate
