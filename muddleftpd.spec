@@ -75,7 +75,8 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/muddleftpd
 touch $RPM_BUILD_ROOT/var/log/muddleftpd.log
 
 # probably it'd be better to provide our own default conf file...
-install examples/standard.conf $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
+install src/ratiotool		$RPM_BUILD_ROOT%{_bindir}
+install examples/standard.conf	$RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
 
 gzip -9nf AUTHORS CHANGES README TODO doc/*.txt examples/*
 
@@ -99,13 +100,6 @@ fi
 %postun
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
 
-#%post 
-#touch /var/log/xferlog
-#awk 'BEGIN { FS = ":" }; { if(($3 < 1000)&&($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
-#if [ ! -f %{_sysconfdir}/ftpusers ]; then
-#	( cd %{_sysconfdir}; mv -f ftpusers.default ftpusers )
-#fi
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -120,15 +114,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
 %attr(754,root,root) /etc/rc.d/init.d/*
 %attr(640,root,root) /etc/sysconfig/*
-
-#%attr(640,root,root) %{_sysconfdir}/ftpusers.default
-#%attr(640,root,root) %ghost %{_sysconfdir}/ftpusers
-
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 
 %{_mandir}/man1/*
 %{_infodir}/*
-
-#%dir /home/ftp/pub
-#%attr(711,root,root) %dir /home/ftp/pub/Incoming
