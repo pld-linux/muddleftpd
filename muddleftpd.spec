@@ -176,7 +176,7 @@ fi
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/muddleftpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.ftp
-%attr(640,root,root) /etc/logrotate.d/*
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
 %attr(754,root,root) /etc/rc.d/init.d/*
