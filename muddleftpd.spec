@@ -14,6 +14,7 @@ Source4:	%{name}.sysconfig
 Source5:	%{name}.conf
 Source6:	%{name}-mudpasswd.1
 Patch0:		%{name}-MD5-passwd.patch
+Patch1:		%{name}-DONT_INST_DOC.patch
 URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	autoconf
 BuildRequires:	pam-devel
@@ -56,6 +57,7 @@ dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 rm -f configure
@@ -71,12 +73,14 @@ rm -f configure
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_sysconfdir},/var/log} \
 	$RPM_BUILD_ROOT/etc/{pam.d,logrotate.d,rc.d/init.d,sysconfig,security} \
-	$RPM_BUILD_ROOT/home/services/ftp/{pub,upload}
+	$RPM_BUILD_ROOT/home/services/ftp/{pub,upload} \
+	$RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %{__make} install \
 	BINDIR=$RPM_BUILD_ROOT%{_sbindir} \
 	MANDIR=$RPM_BUILD_ROOT%{_mandir} \
-	INFODIR=$RPM_BUILD_ROOT%{_infodir}
+	INFODIR=$RPM_BUILD_ROOT%{_infodir} \
+	libdir=$RPM_BUILD_ROOT%{_libdir}/%{name}
 
 mv -f $RPM_BUILD_ROOT%{_sbindir}/ftpwho $RPM_BUILD_ROOT%{_bindir}
 
