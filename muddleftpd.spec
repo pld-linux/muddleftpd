@@ -18,8 +18,8 @@ URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	autoconf
 BuildRequires:	pam-devel
 BuildRequires:	texinfo
-Prereq:		rc-scripts
-Prereq:		/sbin/chkconfig
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
 Provides:	ftpserver
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -129,4 +129,4 @@ fi
 %attr(755,root,root) %dir /home/services/ftp/pub
 %attr(700,root,ftp) %verify(not mode) %dir /home/services/ftp/upload
 %{_mandir}/man1/*
-%{_infodir}/*
+%{_infodir}/*.info*
