@@ -2,7 +2,7 @@ Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
 Version:	1.3.13.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/%{name}/%{name}-%{version}.tar.gz
@@ -18,13 +18,13 @@ Patch1:		%{name}-DONT_INST_DOC.patch
 URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	mysql-devel
 BuildRequires:	pam-devel
+BuildRequires:	perl-base
 BuildRequires:	texinfo
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
 Requires:	pam >= 0.77.3
 Provides:	ftpserver
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ftpserver
 Obsoletes:	anonftp
 Obsoletes:	bftpd
@@ -40,6 +40,7 @@ Obsoletes:	pure-ftpd
 Obsoletes:	troll-ftpd
 Obsoletes:	vsftpd
 Obsoletes:	wu-ftpd
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/muddleftpd
 %define		_localstatedir	/var/run
@@ -59,7 +60,7 @@ dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 Summary:	MUD authentication library for muddleftpd
 Summary(pl):	Biblioteka do uwierzytelniania MUD dla muddleftpd
 Group:		Daemons
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description authlibmud
 This module allows muddleftpd to authenticate against player files
@@ -73,7 +74,7 @@ pliki graczy na serwerze muda.
 Summary:	MySQL authentication library for muddleftpd
 Summary(pl):	Biblioteka uwierzytelniania MySQL dla muddleftpd
 Group:		Daemons
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 # no R:	mysql - database can be remote
 
 %description authlibmysql
@@ -90,7 +91,7 @@ MySQL.
 Summary:	SMB authentication library for muddleftpd
 Summary(pl):	Biblioteka do uwierzytelniania SMB dla muddleftpd
 Group:		Daemons
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description authlibsmb
 This module allows muddleftpd to authenticate using a SMB server.
@@ -104,8 +105,11 @@ serwera SMB.
 %patch0 -p1
 %patch1 -p1
 
+%{__perl} -pi -e 's/^(CFLAGS=.*)/$1 -fPIC/' modules/auth/*/Makefile.in
+
 %build
 %configure \
+	MYSQL_LIB_DIR=%{_libdir} \
 	--with-authmysql \
 	--with-authmud
 
