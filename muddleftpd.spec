@@ -74,6 +74,10 @@ touch $RPM_BUILD_ROOT/var/log/muddleftpd.log
 # probably it'd be better to provide our own default conf file...
 install examples/standard.conf $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
 
+mv -f $RPM_BUILD_ROOT%{_mandir}/man1/ftpwho $RPM_BUILD_ROOT%{_mandir}/man1/ftpwho.1
+mv -f $RPM_BUILD_ROOT%{_mandir}/man1/mudpasswd $RPM_BUILD_ROOT%{_mandir}/man1/mudpasswd.1
+mv -f $RPM_BUILD_ROOT%{_mandir}/man1/muddleftpd $RPM_BUILD_ROOT%{_mandir}/man1/muddleftpd.1
+
 gzip -9nf AUTHORS CHANGES README TODO doc/*.txt examples/*
 
 %post
