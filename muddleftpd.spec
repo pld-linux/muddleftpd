@@ -35,11 +35,10 @@ Obsoletes:	wu-ftpd
 %define		_localstatedir	/var/run
 
 %description
-MUDDLEFTPD is a server for the Internet File Transfer Protocol.
-Normal FTP servers tend to always want to run with root privileges on
-the server host. MUDDLEFTPD is designed to overcome this obstacle
-without limiting the available features when running without root
-privileges.
+MUDDLEFTPD is a server for the Internet File Transfer Protocol. Normal
+FTP servers tend to always want to run with root privileges on the
+server host. MUDDLEFTPD is designed to overcome this obstacle without
+limiting the available features when running without root privileges.
 
 %description -l pl
 MUDDLEFTPD jest serwerem FTP. O ile wiêkszo¶æ serwerów FTP chce
