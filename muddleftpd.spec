@@ -63,8 +63,7 @@ dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 rm -f configure
 %{__autoconf}
 %configure \
-		--with-authmysq \
-		--with-authsmb \
+		--with-authmysql \
 		--with-authmud
 
 %{__make}
