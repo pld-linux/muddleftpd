@@ -1,11 +1,3 @@
-#
-# TODO:
-# - check BRs if their really needed (mysql-devel, samba-devel),
-# - check R (packages doesn't compiling on headers and dont linking with
-#            shared libraries - is it ok? :) ),
-# - cleanups,
-# - better descriptions ?
-#
 Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
@@ -24,11 +16,9 @@ Source6:	%{name}-mudpasswd.1
 Patch0:		%{name}-MD5-passwd.patch
 Patch1:		%{name}-DONT_INST_DOC.patch
 URL:		http://www.nongnu.org/muddleftpd/
-BuildRequires:	autoconf
+BuildRequires:	mysql-devel
 BuildRequires:	pam-devel
 BuildRequires:	texinfo
-BuildRequires:	mysql-devel
-#BuildRequires:	samba-devel
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
@@ -65,46 +55,47 @@ uprawnieñ roota, MUDDLEFTPD zosta³ zaprojektowany tak, aby móg³
 dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 
 %package authlibmud
-Summary:        Library to MUD authentication for muddleftpd
-Summary(pl):    Biblioteka do autentykacji MUD dla muddleftpd
-Group:          Daemons
-Requires:	muddleftpd
+Summary:	MUD authentication library for muddleftpd
+Summary(pl):	Biblioteka do uwierzytelniania MUD dla muddleftpd
+Group:		Daemons
+Requires:	%{name} = %{version}
 
 %description authlibmud
-Authenticate against player files on a mud server.
+This module allows muddleftpd to authenticate against player files
+on a mud server.
 
 %description authlibmud -l pl
-Autyrozacja oparta o pliki u¿ytkowników na serwerze muda.
+Ten modu³ pozwala muddleftpd uwierzytelniaæ u¿ytkowników w oparciu o
+pliki graczy na serwerze muda.
 
 %package authlibmysql
-Summary:        Library to MySQL authentication for muddleftpd
-Summary(pl):    Biblioteka autentykacji MySQL dla muddleftpd
-Group:          Daemons
-Requires:	muddleftpd
-Requires:	mysql
+Summary:	MySQL authentication library for muddleftpd
+Summary(pl):	Biblioteka uwierzytelniania MySQL dla muddleftpd
+Group:		Daemons
+Requires:	%{name} = %{version}
+# no R:	mysql - database can be remote
 
 %description authlibmysql
-This module allows muddleftpd authenticate using a MySQL server. This
-module will read client information from a supplied table/database
-within MySQL.
+This module allows muddleftpd to authenticate using a MySQL server.
+This module will read client information from a supplied
+table/database within MySQL.
 
 %description authlibmysql -l pl
-Ten modu³ pozwala muddleftpd autentykowaæ u¿ytkowników przy u¿yciu
+Ten modu³ pozwala muddleftpd uwierzytelniaæ u¿ytkowników przy u¿yciu
 serwera MySQL. Modu³ czyta informacje o kliencie z podanej tabeli/bazy
 MySQL.
 
 %package authlibsmb
-Summary:        Library to SMB authentication for muddleftpd
-Summary(pl):    Biblioteka do autentykacji SMB dla muddleftpd
-Group:          Daemons
-Requires:	muddleftpd
-Requires:	samba-client
+Summary:	SMB authentication library for muddleftpd
+Summary(pl):	Biblioteka do uwierzytelniania SMB dla muddleftpd
+Group:		Daemons
+Requires:	%{name} = %{version}
 
 %description authlibsmb
-This module allows muddleftpd authenticate using a SMB server.
+This module allows muddleftpd to authenticate using a SMB server.
  
 %description authlibsmb -l pl
-Ten modu³ pozwala muddleftpd autentykowa³ u¿ytkowników korzystaj±c z
+Ten modu³ pozwala muddleftpd uwierzytelniaæ u¿ytkowników korzystaj±c z
 serwera SMB.
 
 %prep
@@ -113,11 +104,9 @@ serwera SMB.
 %patch1 -p1
 
 %build
-rm -f configure
-%{__autoconf}
 %configure \
-		--with-authmysql \
-		--with-authmud
+	--with-authmysql \
+	--with-authmud
 
 %{__make}
 
@@ -135,9 +124,9 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_sysconfdir},/var/log} \
 	libdir=$RPM_BUILD_ROOT%{_libdir}/%{name}
 
 # documentation of modules
-mv modules/auth/authlibmud/README modules/auth/authlibmud/README.authlibmud
-mv modules/auth/authlibmysql/README modules/auth/authlibmysql/README.authlibmysql
-mv modules/auth/authlibsmb/README modules/auth/authlibsmb/README.authlibsmb 
+mv -f modules/auth/authlibmud/README modules/auth/authlibmud/README.authlibmud
+mv -f modules/auth/authlibmysql/README modules/auth/authlibmysql/README.authlibmysql
+mv -f modules/auth/authlibsmb/README modules/auth/authlibsmb/README.authlibsmb 
 
 mv -f $RPM_BUILD_ROOT%{_sbindir}/ftpwho $RPM_BUILD_ROOT%{_bindir}
 
@@ -196,13 +185,16 @@ fi
 %{_infodir}/*.info*
 
 %files authlibmud
+%defattr(644,root,root,755)
 %doc modules/auth/authlibmud/README.authlibmud
-%{_libdir}/%{name}/libauthmud.so
+%attr(755,root,root) %{_libdir}/%{name}/libauthmud.so
 
 %files authlibmysql
+%defattr(644,root,root,755)
 %doc modules/auth/authlibmysql/README.authlibmysql
-%{_libdir}/%{name}/libauthmysql.so
+%attr(755,root,root) %{_libdir}/%{name}/libauthmysql.so
 
 %files authlibsmb
+%defattr(644,root,root,755)
 %doc modules/auth/authlibsmb/README.authlibsmb
-%{_libdir}/%{name}/libauthsmb.so
+%attr(755,root,root) %{_libdir}/%{name}/libauthsmb.so
