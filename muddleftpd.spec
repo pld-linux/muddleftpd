@@ -1,12 +1,12 @@
 Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
-Version:	1.3.12.1
-Release:	3
+Version:	1.3.13.1
+Release:	0.1
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/%{name}/%{name}-%{version}.tar.gz
-# Source0-md5:	208d94621a31a76a7e9baaac08463c29
+# Source0-md5:	47cf007466395ce43920f5e60234e107
 Source1:	ftp.pamd
 Source2:	%{name}.logrotate
 Source3:	%{name}.init
@@ -60,7 +60,10 @@ dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 %build
 rm -f configure
 %{__autoconf}
-%configure
+%configure \
+		--with-authmysq \
+		--with-authsmb \
+		--with-authmud
 
 %{__make}
 
