@@ -1,0 +1,7 @@
+# Customized setings for muddleftpd
+
+# Nice level for muddleftpd
+SERVICE_RUN_NICE_LEVEL="+5"
+
+# Cmdline options 
+MUDDLEFTPD_OPTS=""

@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# muddleftpd	ftp server
+#
+# chkconfig:	345 85 15
+# description:	muddleftpd is ftp daemon
+# processname:	muddleftpd
+# pidfile:	/var/run/muddleftpd.pid
+# config:	/etc/muddleftpd/muddleftpd.conf
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
+
+# Get service config
+[ -f /etc/sysconfig/muddleftpd ] && . /etc/sysconfig/muddleftpd
+
+# Check that networking is up.
+if is_no "${NETWORKING}"; then
+        # nls "ERROR: Networking is down. %s can't be run." <service>
+        msg_Network_Down muddleftpd
+        exit 1
+fi
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+        if [ ! -f /var/lock/subsys/muddleftpd ]; then
+		msg_starting muddleftpd
+		daemon muddleftpd $MUDDLEFTPD_OPTS
+	        RETVAL=$?
+    		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/muddleftpd
+	else
+        	msg_Already_Running muddleftpd
+	        exit 1
+	fi
+	;;
+  stop)
+        # Stop daemons.
+	if [ -f /var/lock/subsys/muddleftpd ]; then
+                msg_stopping muddleftpd
+                killproc muddleftpd
+                rm -f /var/lock/subsys/muddleftpd /var/run/muddleftpd.pid >/dev/null 2>&1
+        else
+		msg_Not_Running muddleftpd
+	        exit 1
+	fi
+	;;
+  status)
+	status muddleftpd
+	exit $?
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
+  *)
+	msg_Usage "$0 {start|stop|restart|status}"
+	exit 1
+	;;
+esac
+
+exit $RETVAL

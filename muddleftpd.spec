@@ -1,5 +1,5 @@
-Summary:	PROfessional FTP Daemon with apache-like configuration syntax
-Summary(pl):	PROfesionalny serwer FTP  
+Summary:	muddleftpd - ftp daemon
+Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
 Version:	1.3.7
 Release:	1
@@ -8,10 +8,15 @@ Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
 Source0:	http://www.arach.net.au/~wildfire/muddleftpd/%{name}.%{version}.tar.gz
+Source1:	ftp.pamd
+Source2:	%{name}.logrotate
+Source3:	%{name}.init
+Source4:	%{name}.sysconfig
 URL:		http://www.muddleftpd.cx/
 BuildRequires:	pam-devel
+Prereq:		rc-scripts
+Prereq:		/sbin/chkconfig
 Requires:	logrotate
-Requires:	inetdaemon
 Provides:	ftpserver
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ftpserver
@@ -22,15 +27,22 @@ Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
 Obsoletes:	pure-ftpd
 Obsoletes:	wu-ftpd
+Obsoletes:	proftpd
 
-%define		_sysconfdir	/etc/ftpd
+%define		_sysconfdir	/etc/muddleftpd
 %define		_localstatedir	/var/run
 
 %description
-FIXME
+MUDDLEFTPD is a server for the Internet File Transfer Protocol.
+Normal FTP servers tend to always want to run with root privileges on
+the server host. MUDDLEFTPD is designed to overcome this obstacle
+without limiting the available features when running without root
+privileges.
 
 %description -l pl
-FIXME
+MUDDLEFTPD jest serwerem FTP. O ile wiêkszo¶æ serwerów FTP chce
+uprawnieñ roota, MUDDLEFTPD zosta³ zaprojektowany tak, aby móg³
+dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 
 %prep
 %setup -q -n %{name}.%{version}
@@ -42,71 +54,76 @@ FIXME
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_sysconfdir},/var/log} \
+	$RPM_BUILD_ROOT/etc/{pam.d,logrotate.d,rc.d/init.d,sysconfig}
 
-%post 
-touch /var/log/xferlog
-awk 'BEGIN { FS = ":" }; { if(($3 < 1000)&&($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
-if [ ! -f %{_sysconfdir}/ftpusers ]; then
-	( cd %{_sysconfdir}; mv -f ftpusers.default ftpusers )
+%{__make} install \
+	BINDIR=$RPM_BUILD_ROOT%{_sbindir} \
+	MANDIR=$RPM_BUILD_ROOT%{_mandir} \
+	INFODIR=$RPM_BUILD_ROOT%{_infodir}
+
+mv -f $RPM_BUILD_ROOT%{_sbindir}/ftpwho $RPM_BUILD_ROOT%{_bindir}
+
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/ftp
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/muddleftpd
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/muddleftpd
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/muddleftpd
+
+touch $RPM_BUILD_ROOT/var/log/muddleftpd.log
+
+# probably it'd be better to provide our own default conf file...
+install examples/standard.conf $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
+
+gzip -9nf AUTHORS CHANGES README TODO doc/*.txt examples/*
+
+%post
+[ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
+/sbin/chkconfig --add muddleftpd
+if [ -f /var/lock/subsys/muddleftpd ]; then
+	/etc/rc.d/init.d/muddleftpd restart 1>&2
+else
+	echo "Run \"/etc/rc.d/init.d/muddleftpd start\" to start muddleftpd daemon."
 fi
 
-#%post inetd
-#if grep -iEqs "^ServerType[[:space:]]+standalone" %{_sysconfdir}/proftpd.conf ; then
-#	cp -a %{_sysconfdir}/proftpd.conf %{_sysconfdir}/proftpd.conf.rpmorig
-#	sed -e "s/^ServerType[[:space:]]\+standalone/ServerType			inetd/g" \
-#		%{_sysconfdir}/proftpd.conf.rpmorig >%{_sysconfdir}/proftpd.conf
-#fi
-#if [ -f /var/lock/subsys/rc-inetd ]; then
-#	/etc/rc.d/init.d/rc-inetd restart 1>&2
-#else
-#	echo "Type \"/etc/rc.d/init.d/rc-inetd start\" to start inet sever" 1>&2
-#fi
+%preun
+if [ "$1" = "0" -a -f /var/lock/subsys/muddleftpd ]; then
+	/etc/rc.d/init.d/muddleftpd stop 1>&2
+fi
+/sbin/chkconfig --del muddleftpd
 
-#%postun inetd
-#if [ "$1" = "0" -a -f /var/lock/subsys/rc-inetd ]; then
-#	/etc/rc.d/init.d/rc-inetd reload 1>&2
+%postun
+[ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
+
+#%post 
+#touch /var/log/xferlog
+#awk 'BEGIN { FS = ":" }; { if(($3 < 1000)&&($1 != "ftp")) print $1; }' < /etc/passwd >> %{_sysconfdir}/ftpusers.default
+#if [ ! -f %{_sysconfdir}/ftpusers ]; then
+#	( cd %{_sysconfdir}; mv -f ftpusers.default ftpusers )
 #fi
-#
-#%post standalone
-#/sbin/chkconfig --add proftpd
-#if grep -iEqs "^ServerType[[:space:]]+inetd" %{_sysconfdir}/proftpd.conf ; then
-#	cp -a %{_sysconfdir}/proftpd.conf %{_sysconfdir}/proftpd.conf.rpmorig
-#	sed -e "s/^ServerType[[:space:]]\+inetd/ServerType			standalone/g" \
-#		%{_sysconfdir}/proftpd.conf.rpmorig >%{_sysconfdir}/proftpd.conf
-#fi
-#if [ -f /var/lock/subsys/proftpd ]; then
-#	/etc/rc.d/init.d/proftpd restart 1>&2
-#else
-#	echo "Run \"/etc/rc.d/init.d/proftpd start\" to start ProFTPD daemon."
-#fi
-#
-#%preun standalone
-#if [ "$1" = "0" -a -f /var/lock/subsys/proftpd ]; then
-#	/etc/rc.d/init.d/proftpd stop 1>&2
-#fi
-#/sbin/chkconfig --del proftpd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc {ChangeLog,README*}.gz contrib/README.modules.gz
-%doc sample-configurations/{virtual,anonymous}.conf.gz 
-%doc doc/*html
+%doc *.gz doc/*.gz examples
 
 %attr(750,root,root) %dir %{_sysconfdir}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/muddleftpd.conf
 %attr(640,root,root) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
-%{?!bcond_off_pam:%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
+%attr(754,root,root) /etc/rc.d/init.d/*
+%attr(640,root,root) /etc/sysconfig/*
 
-%attr(640,root,root) %{_sysconfdir}/ftpusers.default
-%attr(640,root,root) %ghost %{_sysconfdir}/ftpusers
+#%attr(640,root,root) %{_sysconfdir}/ftpusers.default
+#%attr(640,root,root) %ghost %{_sysconfdir}/ftpusers
 
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 
-%{_mandir}/man[158]/*
+%{_mandir}/man1/*
+%{_infodir}/*
 
-%dir /home/ftp/pub
-%attr(711,root,root) %dir /home/ftp/pub/Incoming
+#%dir /home/ftp/pub
+#%attr(711,root,root) %dir /home/ftp/pub/Incoming
