@@ -79,7 +79,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/ftp
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/muddleftpd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/muddleftpd
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/muddleftpd
-install %{SOURCE6} $RPM_BUILD_ROOT{_mandir}/man1/mudpasswd.1
+install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man1/mudpasswd.1
 
 
 touch $RPM_BUILD_ROOT/var/log/muddleftpd
