@@ -86,10 +86,12 @@ else
 fi
 
 %preun
-if [ "$1" = "0" -a -f /var/lock/subsys/muddleftpd ]; then
-	/etc/rc.d/init.d/muddleftpd stop 1>&2
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/muddleftpd ]; then
+		/etc/rc.d/init.d/muddleftpd stop 1>&2
+	fi
+	/sbin/chkconfig --del muddleftpd
 fi
-/sbin/chkconfig --del muddleftpd
 
 %postun
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
