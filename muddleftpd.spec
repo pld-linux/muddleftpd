@@ -28,9 +28,10 @@ Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
 Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
-Obsoletes:	pure-ftpd
-Obsoletes:	wu-ftpd
 Obsoletes:	proftpd
+Obsoletes:	pure-ftpd
+Obsoletes:	troll-ftpd
+Obsoletes:	wu-ftpd
 
 %define		_sysconfdir	/etc/muddleftpd
 %define		_localstatedir	/var/run
