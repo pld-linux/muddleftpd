@@ -59,7 +59,8 @@ autoconf
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_sysconfdir},/var/log} \
-	$RPM_BUILD_ROOT/etc/{pam.d,logrotate.d,rc.d/init.d,sysconfig}
+	$RPM_BUILD_ROOT/etc/{pam.d,logrotate.d,rc.d/init.d,sysconfig} \
+	$RPM_BUILD_ROOT/home/ftp/{pub,upload}
 
 %{__make} install \
 	BINDIR=$RPM_BUILD_ROOT%{_sbindir} \
@@ -81,6 +82,9 @@ install examples/standard.conf	$RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
 
 gzip -9nf AUTHORS CHANGES README TODO doc/*.txt examples/*
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %post
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
 /sbin/chkconfig --add muddleftpd
@@ -100,9 +104,6 @@ fi
 
 %postun
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
