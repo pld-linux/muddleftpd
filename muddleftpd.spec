@@ -1,8 +1,8 @@
 Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
-Version:	1.3.9
-Release:	2
+Version:	1.3.11
+Release:	1
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -12,6 +12,7 @@ Source1:	ftp.pamd
 Source2:	%{name}.logrotate
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
+Patch0:		%{name}-MD5-passwd.patch
 URL:		http://www.muddleftpd.cx/
 BuildRequires:	pam-devel
 Prereq:		rc-scripts
@@ -46,8 +47,12 @@ dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 
 %prep
 %setup -q -n %{name}.%{version}
+%patch0 -p1
 
 %build
+
+chmod +x configure
+
 %configure
 
 %{__make}
@@ -73,10 +78,6 @@ touch $RPM_BUILD_ROOT/var/log/muddleftpd.log
 
 # probably it'd be better to provide our own default conf file...
 install examples/standard.conf $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
-
-mv -f $RPM_BUILD_ROOT%{_mandir}/man1/ftpwho $RPM_BUILD_ROOT%{_mandir}/man1/ftpwho.1
-mv -f $RPM_BUILD_ROOT%{_mandir}/man1/mudpasswd $RPM_BUILD_ROOT%{_mandir}/man1/mudpasswd.1
-mv -f $RPM_BUILD_ROOT%{_mandir}/man1/muddleftpd $RPM_BUILD_ROOT%{_mandir}/man1/muddleftpd.1
 
 gzip -9nf AUTHORS CHANGES README TODO doc/*.txt examples/*
 
