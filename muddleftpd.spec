@@ -64,7 +64,7 @@ rm -f configure
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_sysconfdir},/var/log} \
 	$RPM_BUILD_ROOT/etc/{pam.d,logrotate.d,rc.d/init.d,sysconfig,security} \
-	$RPM_BUILD_ROOT/home/ftp/{pub,upload}
+	$RPM_BUILD_ROOT/home/services/ftp/{pub,upload}
 
 %{__make} install \
 	BINDIR=$RPM_BUILD_ROOT%{_sbindir} \
@@ -125,6 +125,6 @@ fi
 %{_mandir}/man1/*
 %{_infodir}/*
 
-%attr(755,root,root) %dir /home/ftp
-%attr(755,root,root) %dir /home/ftp/pub
-%attr(700,root,ftp) %verify(not mode) %dir /home/ftp/upload
+%attr(755,root,root) %dir /home/services/ftp
+%attr(755,root,root) %dir /home/services/ftp/pub
+%attr(700,root,ftp) %verify(not mode) %dir /home/services/ftp/upload
