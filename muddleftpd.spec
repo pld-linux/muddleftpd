@@ -21,6 +21,7 @@ BuildRequires:	texinfo
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
+Requires:	pam >= 0.77.3
 Provides:	ftpserver
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	ftpserver
