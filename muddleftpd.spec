@@ -50,9 +50,7 @@ dzia³aæ bez tych uprawnieñ bez zbytniego ograniczenia mo¿liwo¶ci.
 %patch0 -p1
 
 %build
-
-chmod +x configure
-
+autoconf
 %configure
 
 %{__make}
