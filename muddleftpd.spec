@@ -6,6 +6,7 @@ Release:	2
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/%{name}/%{name}-%{version}.tar.gz
+# Source0-md5:	208d94621a31a76a7e9baaac08463c29
 Source1:	ftp.pamd
 Source2:	%{name}.logrotate
 Source3:	%{name}.init
