@@ -29,7 +29,7 @@ fi
 # Get service config
 [ -f /etc/sysconfig/muddleftpd ] && . /etc/sysconfig/muddleftpd
 
-
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
@@ -41,7 +41,6 @@ case "$1" in
     		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/muddleftpd
 	else
 		msg_already_running muddleftpd
-		exit 1
 	fi
 	;;
   stop)
@@ -52,21 +51,20 @@ case "$1" in
 		rm -f /var/lock/subsys/muddleftpd /var/run/muddleftpd.pid >/dev/null 2>&1
 	else
 		msg_not_running muddleftpd
-		exit 1
 	fi
 	;;
   status)
 	status muddleftpd
 	exit $?
 	;;
-  restart|reload)
+  restart|force-reload)
 	$0 stop
 	$0 start
+	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|status}"
-	exit 1
-	;;
+	msg_usage "$0 {start|stop|restart|force-reload|status}"
+	exit 3
 esac
 
 exit $RETVAL
