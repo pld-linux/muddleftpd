@@ -82,24 +82,14 @@ install examples/standard.conf $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
 gzip -9nf AUTHORS CHANGES README TODO doc/*.txt examples/*
 
 %post
-[ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
-/sbin/chkconfig --add muddleftpd
-if [ -f /var/lock/subsys/muddleftpd ]; then
-	/etc/rc.d/init.d/muddleftpd restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/muddleftpd start\" to start muddleftpd daemon."
-fi
+%fix_info_dir
+DESC="%{name} daemon"; %chkconfig_add
 
 %preun
-if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/muddleftpd ]; then
-		/etc/rc.d/init.d/muddleftpd stop 1>&2
-	fi
-	/sbin/chkconfig --del muddleftpd
-fi
+%chkconfig_del
 
 %postun
-[ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
+%fix_info_dir
 
 #%post 
 #touch /var/log/xferlog
