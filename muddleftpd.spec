@@ -1,7 +1,7 @@
 Summary:	muddleftpd - ftp daemon
 Summary(pl):	muddleftpd - serwer ftp
 Name:		muddleftpd
-Version:	1.3.7
+Version:	1.3.9
 Release:	1
 License:	GPL
 Group:		Daemons
