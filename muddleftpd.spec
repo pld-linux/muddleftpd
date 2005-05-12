@@ -2,7 +2,7 @@ Summary:	muddleftpd - FTP daemon
 Summary(pl):	muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
-Release:	3
+Release:	4
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/%{name}/%{name}-%{version}.tar.gz
@@ -23,7 +23,7 @@ BuildRequires:	texinfo
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
-Requires:	pam >= 0.77.3
+Requires:	pam >= 0.79.0
 Provides:	ftpserver
 Obsoletes:	ftpserver
 Obsoletes:	anonftp
