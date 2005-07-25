@@ -2,7 +2,7 @@ Summary:	muddleftpd - FTP daemon
 Summary(pl):	muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
-Release:	4
+Release:	5
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/%{name}/%{name}-%{version}.tar.gz
@@ -15,6 +15,7 @@ Source5:	%{name}.conf
 Source6:	%{name}-mudpasswd.1
 Patch0:		%{name}-MD5-passwd.patch
 Patch1:		%{name}-DONT_INST_DOC.patch
+Patch2:		%{name}-allowed_filenames_fix.patch
 URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	mysql-devel
 BuildRequires:	pam-devel
@@ -104,6 +105,7 @@ serwera SMB.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %{__perl} -pi -e 's/^(CFLAGS=.*)/$1 -fPIC/' modules/auth/*/Makefile.in
 
