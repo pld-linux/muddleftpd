@@ -5,7 +5,7 @@ Version:	1.3.13.1
 Release:	5
 License:	GPL
 Group:		Daemons
-Source0:	http://savannah.nongnu.org/download/%{name}/%{name}-%{version}.tar.gz
+Source0:	http://savannah.nongnu.org/download/muddleftpd/%{name}-%{version}.tar.gz
 # Source0-md5:	47cf007466395ce43920f5e60234e107
 Source1:	ftp.pamd
 Source2:	%{name}.logrotate
@@ -21,10 +21,10 @@ BuildRequires:	mysql-devel
 BuildRequires:	pam-devel
 BuildRequires:	perl-base
 BuildRequires:	texinfo
-PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
 Requires:	pam >= 0.79.0
+Requires:	rc-scripts
 Provides:	ftpserver
 Obsoletes:	ftpserver
 Obsoletes:	anonftp
@@ -64,8 +64,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description authlibmud
-This module allows muddleftpd to authenticate against player files
-on a mud server.
+This module allows muddleftpd to authenticate against player files on
+a mud server.
 
 %description authlibmud -l pl
 Ten modu³ pozwala muddleftpd uwierzytelniaæ u¿ytkowników w oparciu o
@@ -96,7 +96,7 @@ Requires:	%{name} = %{version}-%{release}
 
 %description authlibsmb
 This module allows muddleftpd to authenticate using a SMB server.
- 
+
 %description authlibsmb -l pl
 Ten modu³ pozwala muddleftpd uwierzytelniaæ u¿ytkowników korzystaj±c z
 serwera SMB.
@@ -133,7 +133,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_sysconfdir},/var/log} \
 # documentation of modules
 mv -f modules/auth/authlibmud/README modules/auth/authlibmud/README.authlibmud
 mv -f modules/auth/authlibmysql/README modules/auth/authlibmysql/README.authlibmysql
-mv -f modules/auth/authlibsmb/README modules/auth/authlibsmb/README.authlibsmb 
+mv -f modules/auth/authlibsmb/README modules/auth/authlibsmb/README.authlibsmb
 
 mv -f $RPM_BUILD_ROOT%{_sbindir}/ftpwho $RPM_BUILD_ROOT%{_bindir}
 
@@ -177,12 +177,12 @@ fi
 %doc AUTHORS ChangeLog README TODO doc/*.txt examples
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/muddleftpd.conf
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.ftp
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.ftp
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/*
 %attr(640,root,root) %ghost /var/log/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
 %attr(754,root,root) /etc/rc.d/init.d/*
-%attr(640,root,root) /etc/sysconfig/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/*
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %dir /home/services/ftp
