@@ -1,0 +1,6 @@
+- added Source5: muddleftpd.conf with "logfile /var/log/muddleftpd" and
+  disabled "logindump /etc/issue.ftp", maybe some other options should
+  be changed too
+- in %instal s/muddleftpd.log/muddleftpd/
+- added /etc/security/blacklist.ftp in %install and %files
+- release 4
