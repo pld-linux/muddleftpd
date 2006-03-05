@@ -20,16 +20,17 @@ URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	mysql-devel
 BuildRequires:	pam-devel
 BuildRequires:	perl-base
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	texinfo
 Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
 Requires:	pam >= 0.79.0
 Requires:	rc-scripts
 Provides:	ftpserver
-Obsoletes:	ftpserver
 Obsoletes:	anonftp
 Obsoletes:	bftpd
 Obsoletes:	ftpd-BSD
+Obsoletes:	ftpserver
 Obsoletes:	glftpd
 Obsoletes:	heimdal-ftpd
 Obsoletes:	linux-ftpd
@@ -155,17 +156,11 @@ rm -rf $RPM_BUILD_ROOT
 %post
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
 /sbin/chkconfig --add muddleftpd
-if [ -f /var/lock/subsys/muddleftpd ]; then
-	/etc/rc.d/init.d/muddleftpd restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/muddleftpd start\" to start muddleftpd daemon."
-fi
+%service muddleftpd restart "muddleftpd daemon"
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/muddleftpd ]; then
-		/etc/rc.d/init.d/muddleftpd stop 1>&2
-	fi
+	%service muddleftpd stop
 	/sbin/chkconfig --del muddleftpd
 fi
 
