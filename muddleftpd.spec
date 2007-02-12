@@ -1,5 +1,5 @@
 Summary:	muddleftpd - FTP daemon
-Summary(pl):	muddleftpd - serwer FTP
+Summary(pl.UTF-8):   muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
 Release:	5
@@ -53,14 +53,14 @@ FTP servers tend to always want to run with root privileges on the
 server host. MUDDLEFTPD is designed to overcome this obstacle without
 limiting the available features when running without root privileges.
 
-%description -l pl
-MUDDLEFTPD jest serwerem FTP. O ile wiÍkszo∂Ê serwerÛw FTP chce
-uprawnieÒ roota, MUDDLEFTPD zosta≥ zaprojektowany tak, aby mÛg≥
-dzia≥aÊ bez tych uprawnieÒ bez zbytniego ograniczenia moøliwo∂ci.
+%description -l pl.UTF-8
+MUDDLEFTPD jest serwerem FTP. O ile wiƒôkszo≈õƒá serwer√≥w FTP chce
+uprawnie≈Ñ roota, MUDDLEFTPD zosta≈Ç zaprojektowany tak, aby m√≥g≈Ç
+dzia≈Çaƒá bez tych uprawnie≈Ñ bez zbytniego ograniczenia mo≈ºliwo≈õci.
 
 %package authlibmud
 Summary:	MUD authentication library for muddleftpd
-Summary(pl):	Biblioteka do uwierzytelniania MUD dla muddleftpd
+Summary(pl.UTF-8):   Biblioteka do uwierzytelniania MUD dla muddleftpd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -68,13 +68,13 @@ Requires:	%{name} = %{version}-%{release}
 This module allows muddleftpd to authenticate against player files on
 a mud server.
 
-%description authlibmud -l pl
-Ten modu≥ pozwala muddleftpd uwierzytelniaÊ uøytkownikÛw w oparciu o
+%description authlibmud -l pl.UTF-8
+Ten modu≈Ç pozwala muddleftpd uwierzytelniaƒá u≈ºytkownik√≥w w oparciu o
 pliki graczy na serwerze muda.
 
 %package authlibmysql
 Summary:	MySQL authentication library for muddleftpd
-Summary(pl):	Biblioteka uwierzytelniania MySQL dla muddleftpd
+Summary(pl.UTF-8):   Biblioteka uwierzytelniania MySQL dla muddleftpd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 # no R:	mysql - database can be remote
@@ -84,22 +84,22 @@ This module allows muddleftpd to authenticate using a MySQL server.
 This module will read client information from a supplied
 table/database within MySQL.
 
-%description authlibmysql -l pl
-Ten modu≥ pozwala muddleftpd uwierzytelniaÊ uøytkownikÛw przy uøyciu
-serwera MySQL. Modu≥ czyta informacje o kliencie z podanej tabeli/bazy
+%description authlibmysql -l pl.UTF-8
+Ten modu≈Ç pozwala muddleftpd uwierzytelniaƒá u≈ºytkownik√≥w przy u≈ºyciu
+serwera MySQL. Modu≈Ç czyta informacje o kliencie z podanej tabeli/bazy
 MySQL.
 
 %package authlibsmb
 Summary:	SMB authentication library for muddleftpd
-Summary(pl):	Biblioteka do uwierzytelniania SMB dla muddleftpd
+Summary(pl.UTF-8):   Biblioteka do uwierzytelniania SMB dla muddleftpd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description authlibsmb
 This module allows muddleftpd to authenticate using a SMB server.
 
-%description authlibsmb -l pl
-Ten modu≥ pozwala muddleftpd uwierzytelniaÊ uøytkownikÛw korzystaj±c z
+%description authlibsmb -l pl.UTF-8
+Ten modu≈Ç pozwala muddleftpd uwierzytelniaƒá u≈ºytkownik√≥w korzystajƒÖc z
 serwera SMB.
 
 %prep
