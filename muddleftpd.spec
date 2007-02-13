@@ -1,5 +1,5 @@
 Summary:	muddleftpd - FTP daemon
-Summary(pl.UTF-8):   muddleftpd - serwer FTP
+Summary(pl.UTF-8):	muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
 Release:	5
@@ -60,7 +60,7 @@ działać bez tych uprawnień bez zbytniego ograniczenia możliwości.
 
 %package authlibmud
 Summary:	MUD authentication library for muddleftpd
-Summary(pl.UTF-8):   Biblioteka do uwierzytelniania MUD dla muddleftpd
+Summary(pl.UTF-8):	Biblioteka do uwierzytelniania MUD dla muddleftpd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -74,7 +74,7 @@ pliki graczy na serwerze muda.
 
 %package authlibmysql
 Summary:	MySQL authentication library for muddleftpd
-Summary(pl.UTF-8):   Biblioteka uwierzytelniania MySQL dla muddleftpd
+Summary(pl.UTF-8):	Biblioteka uwierzytelniania MySQL dla muddleftpd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 # no R:	mysql - database can be remote
@@ -91,7 +91,7 @@ MySQL.
 
 %package authlibsmb
 Summary:	SMB authentication library for muddleftpd
-Summary(pl.UTF-8):   Biblioteka do uwierzytelniania SMB dla muddleftpd
+Summary(pl.UTF-8):	Biblioteka do uwierzytelniania SMB dla muddleftpd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
