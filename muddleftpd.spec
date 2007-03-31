@@ -33,6 +33,7 @@ Obsoletes:	ftpd-BSD
 Obsoletes:	ftpserver
 Obsoletes:	glftpd
 Obsoletes:	heimdal-ftpd
+Obsoletes:	krb5-ftpd
 Obsoletes:	linux-ftpd
 Obsoletes:	proftpd
 Obsoletes:	proftpd-common
