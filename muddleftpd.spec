@@ -2,7 +2,7 @@ Summary:	muddleftpd - FTP daemon
 Summary(pl.UTF-8):	muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
-Release:	5
+Release:	6
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/muddleftpd/%{name}-%{version}.tar.gz
@@ -27,22 +27,6 @@ Requires:	logrotate
 Requires:	pam >= 0.79.0
 Requires:	rc-scripts
 Provides:	ftpserver
-Obsoletes:	anonftp
-Obsoletes:	bftpd
-Obsoletes:	ftpd-BSD
-Obsoletes:	ftpserver
-Obsoletes:	glftpd
-Obsoletes:	heimdal-ftpd
-Obsoletes:	krb5-ftpd
-Obsoletes:	linux-ftpd
-Obsoletes:	proftpd
-Obsoletes:	proftpd-common
-Obsoletes:	proftpd-inetd
-Obsoletes:	proftpd-standalone
-Obsoletes:	pure-ftpd
-Obsoletes:	troll-ftpd
-Obsoletes:	vsftpd
-Obsoletes:	wu-ftpd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/muddleftpd
