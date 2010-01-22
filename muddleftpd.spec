@@ -2,7 +2,7 @@ Summary:	muddleftpd - FTP daemon
 Summary(pl.UTF-8):	muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
-Release:	6
+Release:	7
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/muddleftpd/%{name}-%{version}.tar.gz
