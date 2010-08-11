@@ -2,7 +2,7 @@ Summary:	muddleftpd - FTP daemon
 Summary(pl.UTF-8):	muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
-Release:	7
+Release:	8
 License:	GPL
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/muddleftpd/%{name}-%{version}.tar.gz
@@ -165,8 +165,9 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/*
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
-%attr(755,root,root) %dir /home/services/ftp
-%attr(755,root,root) %dir /home/services/ftp/pub
+%dir %{_libdir}/%{name}
+%dir /home/services/ftp
+%dir /home/services/ftp/pub
 %attr(700,root,ftp) %verify(not mode) %dir /home/services/ftp/upload
 %{_mandir}/man1/*
 %{_infodir}/*.info*
