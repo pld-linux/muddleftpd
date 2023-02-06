@@ -2,8 +2,8 @@ Summary:	muddleftpd - FTP daemon
 Summary(pl.UTF-8):	muddleftpd - serwer FTP
 Name:		muddleftpd
 Version:	1.3.13.1
-Release:	9
-License:	GPL
+Release:	10
+License:	GPL v2+
 Group:		Daemons
 Source0:	http://savannah.nongnu.org/download/muddleftpd/%{name}-%{version}.tar.gz
 # Source0-md5:	47cf007466395ce43920f5e60234e107
@@ -16,11 +16,12 @@ Source6:	%{name}-mudpasswd.1
 Patch0:		%{name}-MD5-passwd.patch
 Patch1:		%{name}-DONT_INST_DOC.patch
 Patch2:		%{name}-allowed_filenames_fix.patch
+Patch3:		%{name}-no-common.patch
 URL:		http://www.nongnu.org/muddleftpd/
 BuildRequires:	mysql-devel
 BuildRequires:	pam-devel
-BuildRequires:	perl-base
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	sed >= 4.0
 BuildRequires:	texinfo
 Requires(post,preun):	/sbin/chkconfig
 Requires:	logrotate
@@ -92,8 +93,10 @@ serwera SMB.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
-%{__perl} -pi -e 's/^(CFLAGS=.*)/$1 -fPIC/' modules/auth/*/Makefile.in
+%{__sed} -i -e '/^CFLAGS=/ s/$/ -fPIC/' modules/auth/*/Makefile.in
+%{__sed} -i -e '3i CC=@CC@' modules/auth/authlibsmb/smbval/Makefile.in
 
 %build
 %configure \
@@ -117,23 +120,23 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_sysconfdir},/var/log} \
 	libdir=$RPM_BUILD_ROOT%{_libdir}/%{name}
 
 # documentation of modules
-mv -f modules/auth/authlibmud/README modules/auth/authlibmud/README.authlibmud
-mv -f modules/auth/authlibmysql/README modules/auth/authlibmysql/README.authlibmysql
-mv -f modules/auth/authlibsmb/README modules/auth/authlibsmb/README.authlibsmb
+%{__mv} modules/auth/authlibmud/README modules/auth/authlibmud/README.authlibmud
+%{__mv} modules/auth/authlibmysql/README modules/auth/authlibmysql/README.authlibmysql
+%{__mv} modules/auth/authlibsmb/README modules/auth/authlibsmb/README.authlibsmb
 
-mv -f $RPM_BUILD_ROOT%{_sbindir}/ftpwho $RPM_BUILD_ROOT%{_bindir}
+%{__mv} $RPM_BUILD_ROOT%{_sbindir}/ftpwho $RPM_BUILD_ROOT%{_bindir}
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/ftp
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/muddleftpd
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/muddleftpd
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/muddleftpd
-install %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man1/mudpasswd.1
+cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/ftp
+cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/muddleftpd
+cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/muddleftpd
+cp -p %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/muddleftpd
+cp -p %{SOURCE6} $RPM_BUILD_ROOT%{_mandir}/man1/mudpasswd.1
 
 touch $RPM_BUILD_ROOT/var/log/muddleftpd
 touch $RPM_BUILD_ROOT/etc/security/blacklist.ftp
 
-install src/ratiotool		$RPM_BUILD_ROOT%{_bindir}
-install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
+install src/ratiotool $RPM_BUILD_ROOT%{_bindir}
+cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/muddleftpd.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -158,19 +161,24 @@ fi
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/muddleftpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.ftp
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/*
-%attr(640,root,root) %ghost /var/log/*
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/*
-%attr(754,root,root) /etc/rc.d/init.d/*
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/*
-%attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_sbindir}/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/muddleftpd
+%attr(640,root,root) %ghost /var/log/muddleftpd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/ftp
+%attr(754,root,root) /etc/rc.d/init.d/muddleftpd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/muddleftpd
+%attr(755,root,root) %{_bindir}/ftpwho
+%attr(755,root,root) %{_bindir}/ratiotool
+%attr(755,root,root) %{_sbindir}/muddleftpd
+%attr(755,root,root) %{_sbindir}/mudlogd
+%attr(755,root,root) %{_sbindir}/mudpasswd
 %dir %{_libdir}/%{name}
 %dir /home/services/ftp
 %dir /home/services/ftp/pub
 %attr(700,root,ftp) %verify(not mode) %dir /home/services/ftp/upload
-%{_mandir}/man1/*
-%{_infodir}/*.info*
+%{_mandir}/man1/ftpwho.1*
+%{_mandir}/man1/muddleftpd.1*
+%{_mandir}/man1/mudpasswd.1*
+%{_infodir}/muddleftpd.info*
 
 %files authlibmud
 %defattr(644,root,root,755)
